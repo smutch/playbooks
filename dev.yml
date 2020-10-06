@@ -1,0 +1,5 @@
+---
+- name: setup dev debian environment
+  hosts: '*'
+  roles:
+    - common

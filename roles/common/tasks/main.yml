@@ -1,0 +1,17 @@
+---
+- name: neovim
+  include_tasks: neovim.yml
+
+- name: tmux
+  include_tasks: tmux.yml
+
+- name: starship
+  shell: 'curl -fsSL https://starship.rs/install.sh | bash -s -- -y'
+  args:
+    creates: /usr/local/bin/starship
+  become: true
+
+- name: bash aliases
+  copy:
+    src: '../files/bash_aliases'
+    dest: ~/.bash_aliases

@@ -1,0 +1,40 @@
+---
+- name: create bin directory
+  file:
+    path: ~/bin
+    state: directory
+
+- name: download neovim
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    dest: ~/bin/nvim
+    mode: '750'
+
+- name: create config directory
+  file:
+    path: ~/.config
+    state: directory
+
+- name: clone neovim config
+  git:
+    repo: 'https://github.com/smutch/vim-config.git'
+    dest: ~/.config/nvim
+    version: lsp
+
+- name: ensure python3 installed
+  become: true
+  apt:
+    update_cache: yes
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: install pynvim globally
+  become: true
+  pip:
+    executable: pip3
+    name: pynvim
+
+- name: setup neovim
+  shell: '~/bin/nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall'
