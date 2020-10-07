@@ -1,0 +1,40 @@
+[core]
+    editor = $HOME/bin/nvim
+[user]
+	name = Simon Mutch
+	email = smutch@unimelb.edu.au
+[alias]
+    lg = log --graph --format='%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
+
+    b = branch
+    ba = branch -a
+
+    d = !git diff | view -
+    ds = diff --staged
+
+    co = checkout
+    nb = checkout -b 
+
+    st = status
+    s = status -sb
+
+    c = commit
+    cv = commit --verbose
+    ca = commit -a
+    cav = commit -a --verbose
+    amend = commit --amend -C HEAD
+
+    undo = reset --sort HEAD^
+
+    stash-push = "!git stash > /dev/null && git stash apply > /dev/null"
+    sp = !git stash-push
+[color]
+    ui = auto
+[diff]
+    mnemonicprefix = true
+    tool = vimdiff
+[merge]
+    tool = vimdiff
+[mergetool "vimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'

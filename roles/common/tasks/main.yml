@@ -2,6 +2,10 @@
 - name: neovim
   include_tasks: neovim.yml
 
+- name: miniconda
+  import_role:
+    name: andrewrothstein.miniconda
+
 - name: tmux
   include_tasks: tmux.yml
 
@@ -13,6 +17,8 @@
     src: '../files/bash_aliases'
     dest: ~/.bash_aliases
 
-- name: miniconda
-  import_role:
-    name: andrewrothstein.miniconda
+- name: gitconfig
+  copy:
+    src: '../files/gitconfig'
+    dest: ~/.gitconfig
+
