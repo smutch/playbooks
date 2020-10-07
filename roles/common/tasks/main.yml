@@ -6,16 +6,7 @@
   include_tasks: tmux.yml
 
 - name: starship
-  tasks:
-    shell: 'curl -fsSL https://starship.rs/install.sh | bash -s -- -y 
-      && starship init bash >> .bashrc'
-    args:
-      creates: /usr/local/bin/starship
-    become: true
-  tasks:
-    copy:
-      src: '../files/starship.toml'
-      dest: '~/.config/starship.toml'
+  include_tasks: starship.yml
 
 - name: bash aliases
   copy:
