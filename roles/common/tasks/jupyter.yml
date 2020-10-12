@@ -1,4 +1,8 @@
 ---
+- name: import the conda role
+  import_role:
+    name: evandam.conda
+
 - name: create conda env
   conda:
     name: 
