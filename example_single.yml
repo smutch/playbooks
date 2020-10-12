@@ -1,0 +1,8 @@
+---
+- name: test
+  hosts: 'localhost'
+  vars:
+    conda_env: test
+
+  tasks:
+    - import_tasks: roles/common/tasks/jupyter.yml
