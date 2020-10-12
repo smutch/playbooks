@@ -3,8 +3,7 @@
   include_tasks: neovim.yml
 
 - name: miniconda
-  import_role:
-    name: andrewrothstein.miniconda
+  include_tasks: miniconda.yml
 
 - name: tmux
   include_tasks: tmux.yml

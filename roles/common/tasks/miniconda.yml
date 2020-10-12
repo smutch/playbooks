@@ -1,0 +1,7 @@
+---
+- name: Install miniconda
+  import_role:
+    name: andrewrothstein.miniconda
+
+- name: add miniconda to rc files
+  shell: '$(echo /usr/local/Miniconda*)/bin/conda init'

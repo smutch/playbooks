@@ -1,0 +1,15 @@
+---
+- name: create conda env
+  conda:
+    name: 
+    - python
+    - jupyterlab
+    - black
+    - jupyterlab_code_formatter
+    - dask
+    - dask-labextension
+    state: present
+    environment: "{{ conda_env }}"
+
+- name: enable jupyterlab extensions
+  script: ../files/jupyterlab_extension.sh {{ conda_env }}
