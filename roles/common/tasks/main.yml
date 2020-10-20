@@ -11,6 +11,9 @@
 - name: starship
   include_tasks: starship.yml
 
+- name: autojump
+  include_tasks: autojump.yml
+
 - name: bash aliases
   copy:
     src: '../files/bash_aliases'

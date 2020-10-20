@@ -1,0 +1,13 @@
+---
+- name: install autojump
+  apt:
+    name:
+      - autojump
+    state: present
+
+- name: add autojump to bashrc
+  lineinfile:
+    path: '$HOME/.bashrc'
+    state: present
+    line: '. /usr/share/autojump/autojump.sh'
+
