@@ -38,3 +38,14 @@
 
 - name: setup neovim
   shell: '~/bin/nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall'
+
+- name: install .NET core (for pyls_ms)
+  shell: 'curl -L https://dot.net/v1/dotnet-install.sh | bash'
+  args:
+    creates: '$HOME/.dotnet'
+
+- name: add .NET core to path
+  lineinfile:
+    path: '$HOME/.profile'
+    state: present
+    line: 'PATH=$PATH:$HOME/.dotnet'
