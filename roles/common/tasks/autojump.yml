@@ -4,6 +4,7 @@
     name:
       - autojump
     state: present
+  become: true
 
 - name: add autojump to bashrc
   lineinfile:
