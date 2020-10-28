@@ -1,0 +1,16 @@
+---
+- name: copy spack env
+  copy:
+    src: files/ronin_cluster-spack.yaml
+    dest: ~/spack_env.yaml
+
+- name: create Meraxes spack env
+  shell: '. /apps/spack/share/spack/setup-env.sh && spack env create meraxes spack_env.yaml'
+  args:
+    creates: /apps/spack/var/spack/environments/meraxes
+
+# THIS NEEDS TO BE DONE ON THE SAME ARCHITECTURE AS THE COMPUTE NODE!
+- name: install Meraxes required software
+  shell: "{{ setup_conda_env }} && . /apps/spack/share/spack/setup-env.sh && conda activate tools && spack env activate meraxes && spack install --no-check-signature"
+  args:
+    executable: /bin/bash

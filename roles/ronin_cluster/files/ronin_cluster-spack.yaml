@@ -1,0 +1,16 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs: [hdf5@1.10.7+hl+mpi, cmake@3.18.4, gsl@2.5, 'fftw@3.3.8+mpi+openmp precision=double,float']
+  view: true
+  packages:
+    openmpi:
+      externals:
+      - spec: openmpi@4.0.2
+        prefix: /opt/amazon/openmpi
+      buildable: false
+  mirrors:
+    bucket: s3://spack-binarycache.store.unimelb.cloud
