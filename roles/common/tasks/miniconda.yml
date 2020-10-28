@@ -4,4 +4,4 @@
     name: andrewrothstein.miniconda
 
 - name: add miniconda to rc files
-  shell: '$(echo /usr/local/Miniconda*)/bin/conda init'
+  shell: '$(echo {{ miniconda_parent_dir }}/Miniconda*)/bin/conda init'
