@@ -1,19 +1,9 @@
 ---
-- name: Setup Ronin cluster specific stuff
-  hosts: '*.unimelb.cloud'
-  roles:
-  - role: evandam.conda
-  vars:
-    miniconda_parent_dir: /apps
+- name: conda tools setup
+  include_tasks: conda.yml
 
-  tasks:
-  - import_tasks: ../../common/tasks/main.yml
+- name: aws setup
+  include_tasks: aws.yml
 
-  - name: conda tools setup
-    include_tasks: conda.yml
-
-  - name: aws setup
-    include_tasks: aws.yml
-
-  - name: spack setup and meraxes requirements
-    include_tasks: spack.yml
+- name: spack setup and meraxes requirements
+  include_tasks: spack.yml

@@ -8,6 +8,9 @@
     conda_bin: "{{ conda_bin_cmd.stdout }}"
     setup_conda_env: 'eval "$({{ conda_bin_cmd.stdout }} shell.bash hook 2> /dev/null)"'
 
+- import_role:
+    name: evandam.conda
+
 - name: get boto3
   conda:
     name:

@@ -14,3 +14,4 @@
   shell: "{{ setup_conda_env }} && . /apps/spack/share/spack/setup-env.sh && conda activate tools && spack env activate meraxes && spack install --no-check-signature"
   args:
     executable: /bin/bash
+  become: ubuntu

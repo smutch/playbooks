@@ -5,6 +5,9 @@
 - name: miniconda
   include_tasks: miniconda.yml
 
+- name: jupyter
+  include_tasks: jupyter.yml
+
 - name: tmux
   include_tasks: tmux.yml
 
