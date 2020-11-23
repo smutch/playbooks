@@ -21,6 +21,7 @@
     - jupyterlab_code_formatter
     - dask
     - dask-labextension
+    - nb_conda_kernels
     state: present
     channels: conda-forge
     executable: "{{ conda_bin }}"
