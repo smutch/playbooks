@@ -1,2 +1,4 @@
 ---
 - name: andrewrothstein.miniconda
+- name: CSCfi.cuda
+- name: evandam.conda
