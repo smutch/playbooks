@@ -1,4 +1,4 @@
 ---
 - name: andrewrothstein.miniconda
+- name: andrewrothstein.conda-env
 - name: CSCfi.cuda
-- name: evandam.conda

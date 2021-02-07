@@ -1,8 +1,4 @@
 ---
-- name: import the conda role
-  import_role:
-    name: evandam.conda
-
 - name: get conda path
   shell: 'find {{ miniconda_parent_dir }}/Miniconda**/bin -name conda -executable'
   register: conda_bin_cmd
@@ -13,19 +9,12 @@
     setup_conda_env: 'eval "$({{ conda_bin_cmd.stdout }} shell.bash hook 2> /dev/null)"'
 
 - name: create conda env
-  conda:
-    name: 
-    - python
-    - jupyterlab
-    - black
-    - jupyterlab_code_formatter
-    - dask
-    - dask-labextension
-    - nb_conda_kernels
-    state: present
-    channels: conda-forge
-    executable: "{{ conda_bin }}"
-    environment: "{{ jupyter_conda_env }}"
+  import_role:
+    name: andrewrothstein.conda-env
+  vars:
+    conda_env_name: "{{ jupyter_conda_env }}"
+    conda_env_environment: "jupyter-env.yml"
 
 - name: enable jupyterlab extensions
+  become: true
   script: "../files/jupyterlab_extension.sh {{ conda_bin }} {{ jupyter_conda_env }}"

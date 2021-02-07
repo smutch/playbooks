@@ -1,0 +1,11 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - jupyterlab
+  - black
+  - jupyterlab_code_formatter
+  - dask
+  - dask-labextension
+  - nb_conda_kernels
