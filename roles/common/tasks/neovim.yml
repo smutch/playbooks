@@ -21,14 +21,13 @@
     dest: ~/.config/nvim
     version: lsp
 
-- name: ensure python3 and nodejs installed
+- name: ensure python3 installed
   become: true
   apt:
     update_cache: yes
     name:
       - python3
       - python3-pip
-      - nodejs
     state: present
 
 - name: install pynvim globally
@@ -37,10 +36,21 @@
     executable: pip3
     name: pynvim
 
-- name: install pyright lang server globally
-  npm:
-    name: pyright
-    global: yes
+- name: install nvm
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: install nodejs via nvm
+  shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node"
+  args:
+    executable: /bin/bash
+
+- name: install pyright lang server
+  shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && npm install -g pyright"
+  args:
+    executable: /bin/bash
 
 - name: setup neovim
   shell: '~/bin/nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall'
