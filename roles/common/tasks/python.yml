@@ -1,0 +1,21 @@
+---
+- name: install pyenv and pyenv-virtualenv
+  shell: 'curl https://pyenv.run | bash'
+
+- name: add pyenv to profile
+  blockinfile:
+    path: '$HOME/.profile'
+    state: present
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init --path)"
+
+- name: add pyenv to bashrc
+  lineinfile:
+    path: '$HOME/.bashrc'
+    state: present
+    line: 'eval "$(pyenv init -)"'
+
+- name: install poetry
+  shell: 'curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -'
