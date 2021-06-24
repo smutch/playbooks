@@ -5,3 +5,8 @@
 
 - name: add miniconda to rc files
   shell: '$(echo {{ miniconda_parent_dir }}/Miniconda*)/bin/conda init'
+
+- name: copy condarc
+  copy:
+    src: '../files/condarc'
+    dest: '~/.condarc'

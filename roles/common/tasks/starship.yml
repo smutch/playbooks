@@ -1,11 +1,11 @@
 ---
 - name: install starship
-  shell: 'curl -fsSL https://starship.rs/install.sh | bash -s -- -b /home/ubuntu/bin -y'
+  shell: 'curl -fsSL https://starship.rs/install.sh | bash -s -- -b ~/bin -y'
   args:
     creates: ~/bin/starship
 
 - name: update bashrc
-  shell: '/home/ubuntu/bin/starship init bash >> .bashrc'
+  shell: '~/bin/starship init bash >> .bashrc'
 
 - name: upload starship config
   copy:

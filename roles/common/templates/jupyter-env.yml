@@ -9,3 +9,4 @@ dependencies:
   - dask
   - dask-labextension
   - nb_conda_kernels
+  - isort
