@@ -2,11 +2,14 @@
 - name: neovim
   include_tasks: neovim.yml
 
+- name: python
+  include_tasks: python.yml
+
 - name: miniconda
   include_tasks: miniconda.yml
 
-- name: jupyter
-  include_tasks: jupyter.yml
+# - name: jupyter
+#   include_tasks: jupyter.yml
 
 - name: tmux
   include_tasks: tmux.yml
