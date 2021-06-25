@@ -19,8 +19,13 @@
   git:
     repo: 'https://github.com/smutch/vim-config.git'
     dest: ~/.config/nvim
-    version: lsp
+    version: master
 
+- name: add system options
+  copy:
+    src: '../files/system.vim'
+    dest: '~/.config/nvim/system.vim'
+  
 - name: ensure python3 installed
   become: true
   apt:
