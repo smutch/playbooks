@@ -1,5 +1,9 @@
 - name: ronin gpu
   hosts: '*.unimelb.cloud'
   roles:
-    - common
-    - ronin_gpu_instance
+    - role: common
+      vars:
+        python: pyenv
+      tags: common
+    - role: ronin_gpu_instance
+      tags: gpu
