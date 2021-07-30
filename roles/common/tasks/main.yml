@@ -22,7 +22,7 @@
   become: true
 
 - name: setup python
-  include_tasks: python.yml
+  import_tasks: python.yml
 
 - name: install neovim
-  include_tasks: neovim.yml
+  import_tasks: neovim.yml
