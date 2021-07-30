@@ -1,6 +1,3 @@
-- name: aws setup
-  include_tasks: aws.yml
-
 - name: install CUDA toolkit
   import_role:
     name: CSCfi.cuda
