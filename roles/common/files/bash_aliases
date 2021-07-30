@@ -1,8 +1,0 @@
-alias v='nvim'
-alias g='git'
-alias co='conda'
-alias p='less'
-
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'

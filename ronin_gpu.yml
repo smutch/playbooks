@@ -1,0 +1,5 @@
+- name: ronin gpu
+  hosts: '*.unimelb.cloud'
+  roles:
+    - common
+    - ronin_gpu_instance

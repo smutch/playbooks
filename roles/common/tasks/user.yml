@@ -1,7 +1,0 @@
----
-- name: create user
-  ansible.builtin.user:
-    name: smutch
-    group: sudo
-    password: {{ user_password | password_hash('sha512') }}
-    update_password: on_create

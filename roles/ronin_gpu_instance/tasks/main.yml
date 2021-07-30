@@ -1,0 +1,42 @@
+- name: aws setup
+  include_tasks: aws.yml
+
+- name: install CUDA toolkit
+  import_role:
+    name: CSCfi.cuda
+  vars:
+    - gpu: true
+    - cuda_restart_node_on_install: true
+  become: true
+
+- name: grab the NVIDIA HPC-SDK
+  get_url:
+    url: https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
+    dest: '{{ ansible_env.HOME }}/'
+
+- name: unzip the SDK
+  unarchive:
+    src: nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
+    dest: '{{ ansible_env.HOME }}/'
+
+- name: install the SDK
+  environment:
+    NVHPC_SILENT: 1
+    NVHPC_INSTALL_DIR: /opt/nvidia/hpc_sdk
+    NVHPC_INSTALL_TYPE: single
+  shell:
+    cmd: '{{ ansible.env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4/install'
+    creates: /opt/nvidia/hpc_sdk
+  become: true
+
+- name: remove the tarball and installer
+  file:
+    path:
+      - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz'
+      - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4'
+    state: absent
+
+- name: copy the setup script
+  copy:
+    src: files/setup-nvidia_hpc_sdk.sh
+    dest: '{{ ansible_env.HOME }}/'

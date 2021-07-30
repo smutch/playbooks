@@ -10,35 +10,14 @@
     dest: ~/bin/nvim
     mode: '750'
 
-- name: create config directory
-  file:
-    path: ~/.config
-    state: directory
+- name: get the pyenv global pip location
+  shell: '{{ ansible_env.HOME }}/.pyenv/bin/pyenv which pip'
+  register: pip_command
+  ignore_errors: true
 
-- name: clone neovim config
-  git:
-    repo: 'https://github.com/smutch/vim-config.git'
-    dest: ~/.config/nvim
-    version: master
-
-- name: add system options
-  copy:
-    src: '../files/system.vim'
-    dest: '~/.config/nvim/system.vim'
-  
-- name: ensure python3 installed
-  become: true
-  apt:
-    update_cache: yes
-    name:
-      - python3
-      - python3-pip
-    state: present
-
-- name: install pynvim globally
-  become: true
+- name: install pynvim in the pyenv global python
   pip:
-    executable: pip3
+    executable: '{{ pip_command.stdout }}'
     name: pynvim
 
 - name: install nvm
@@ -49,11 +28,6 @@
 
 - name: install nodejs via nvm
   shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node"
-  args:
-    executable: /bin/bash
-
-- name: install pyright lang server
-  shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && npm install -g pyright"
   args:
     executable: /bin/bash
 

@@ -1,0 +1,42 @@
+- name: create user
+  hosts: '*.unimelb.cloud'
+  become: true
+  vars:
+  - user: smutch
+
+  tasks:
+  - name: install zsh
+    apt:
+      update_cache: yes
+      name: zsh
+      state: present
+
+  - name: create user
+    ansible.builtin.user:
+      name: '{{ user }}'
+      group: sudo
+      password: "{{ user_password | password_hash('sha512') }}"
+      update_password: on_create
+      shell: /bin/zsh
+    become_user: root
+
+  - name: Set authorized key taken from file
+    ansible.posix.authorized_key:
+      user: '{{ user }}'
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+  # - name: create .ssh dir
+  #   ansible.builtin.file:
+  #     path: '/home/{{ user }}/.ssh'
+  #     state: directory
+  #     group: sudo
+  #   become_user: '{{ user }}'
+
+  # - name: copy ssh key
+  #   ansible.builtin.copy:
+  #     src: ~/.ssh/id_rsa.pub
+  #     dest: '/home/{{ user }}/.ssh'
+  #     group: sudo
+  #     # owner: '{{ user }}'
+  #   become_user: '{{ user }}'

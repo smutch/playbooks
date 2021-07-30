@@ -1,32 +1,28 @@
----
-- name: neovim
-  include_tasks: neovim.yml
+- name: generate locale
+  shell:
+    cmd: locale-gen en_AU.UTF-8
+  become: true
 
-- name: python
+- name: download dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:smutch/dotfiles.git'
+    dest: '{{ ansible_env.HOME }}/dotfiles'
+
+- name: install dotfiles
+  shell:
+    chdir: '{{ ansible_env.HOME }}/dotfiles'
+    cmd: ./install linux
+    executable: /bin/zsh
+
+- name: install tmux
+  apt:
+    name: tmux
+    state: present
+    update_cache: true
+  become: true
+
+- name: setup python
   include_tasks: python.yml
 
-- name: miniconda
-  include_tasks: miniconda.yml
-
-# - name: jupyter
-#   include_tasks: jupyter.yml
-
-- name: tmux
-  include_tasks: tmux.yml
-
-- name: starship
-  include_tasks: starship.yml
-
-- name: autojump
-  include_tasks: autojump.yml
-
-- name: bash aliases
-  copy:
-    src: '../files/bash_aliases'
-    dest: ~/.bash_aliases
-
-- name: gitconfig
-  copy:
-    src: '../files/gitconfig'
-    dest: ~/.gitconfig
-
+- name: install neovim
+  include_tasks: neovim.yml
