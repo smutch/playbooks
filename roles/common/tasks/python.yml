@@ -1,8 +1,10 @@
+# PYENV =============
 - name: install pyenv, pyenv-virtualenv
   shell: |
     curl https://pyenv.run | zsh
   args:
     creates: '{{ ansible_env.HOME }}/.pyenv'
+  when: python == "pyenv"
 
 - name: install requirements to build python
   apt:
@@ -27,11 +29,23 @@
     state: present
     update_cache: true
   become: true
+  when: python == "pyenv"
 
 - name: install python 3.9 (may take some time) and set to global
   shell: >
     {{ ansible_env.HOME }}/.pyenv/bin/pyenv install -s 3.9.6 &&
     {{ ansible_env.HOME }}/.pyenv/bin/pyenv global 3.9.6
+  when: python == "pyenv"
+
+# OR SYSTEM PYTHON
+
+- name: install pip
+  apt:
+    name: python3-pip
+  become: true
+  when: python == "system"
+
+# ===================
 
 - name: install poetry
   shell: >

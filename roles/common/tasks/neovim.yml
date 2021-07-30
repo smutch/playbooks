@@ -10,15 +10,29 @@
     dest: ~/bin/nvim
     mode: '750'
 
+# PYENV =============
+
 - name: get the pyenv global pip location
   shell: '{{ ansible_env.HOME }}/.pyenv/bin/pyenv which pip'
   register: pip_command
   ignore_errors: true
+  when: python == "pyenv"
 
 - name: install pynvim in the pyenv global python
   pip:
     executable: '{{ pip_command.stdout }}'
     name: pynvim
+  when: python == "pyenv"
+
+# OR SYSTEM PYTHON
+
+- name: install pynvim
+  pip:
+    executable: 'pip3'
+    name: pynvim
+  when: python == "system"
+
+# ===================
 
 - name: install nvm
   shell: >
