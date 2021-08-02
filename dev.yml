@@ -1,7 +1,9 @@
+# run with
+# ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook dev.yml -K -i <host>, --ssh-common-args='-o ForwardAgent=yes'
 ---
-# First ensure you are running from a python env with passlib installed. Then run with:
-#   ansible-playbook dev.yml -K -i target_host, --extra-vars '{"user_password": "PASSWORD"}'
 - name: setup dev debian environment
   hosts: '*'
   roles:
     - common
+  vars:
+    python: pyenv  # change to system to use apt installed python3 instead

@@ -1,5 +1,7 @@
+#   ansible-playbook create_user.yml -i ubuntu@<host>, --extra-vars '{"user_password": "PASSWORD"}'
+---
 - name: create user
-  hosts: '*.unimelb.cloud'
+  hosts: '*'
   become: true
   vars:
   - user: smutch
@@ -25,18 +27,3 @@
       user: '{{ user }}'
       state: present
       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-
-  # - name: create .ssh dir
-  #   ansible.builtin.file:
-  #     path: '/home/{{ user }}/.ssh'
-  #     state: directory
-  #     group: sudo
-  #   become_user: '{{ user }}'
-
-  # - name: copy ssh key
-  #   ansible.builtin.copy:
-  #     src: ~/.ssh/id_rsa.pub
-  #     dest: '/home/{{ user }}/.ssh'
-  #     group: sudo
-  #     # owner: '{{ user }}'
-  #   become_user: '{{ user }}'
