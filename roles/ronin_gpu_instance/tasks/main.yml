@@ -8,8 +8,11 @@
     path: "{{ ansible_env.HOME }}/setup-nvidia_hpc_sdk.sh"
   register: setup_script
 
+
 - name: install the NVIDIA SDK
   when: not setup_script.stat.exists
+  vars:
+      nvhpc_target: "{{ nvhpc_install_dir | default('/opt/nvidia/hpc_sdk') }}"
   block:
     - name: grab the NVIDIA HPC-SDK
       get_url:
@@ -24,14 +27,12 @@
         creates: nvhpc_2021_217_Linux_x86_64_cuda_11.4
 
     - name: install the SDK
-      environment:
-        NVHPC_SILENT: 1
-        NVHPC_INSTALL_DIR: /opt/nvidia/hpc_sdk
-        NVHPC_INSTALL_TYPE: single
-      shell:
-        cmd: "{{ ansible.env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4/install"
-        creates: /opt/nvidia/hpc_sdk
       become: true
+      shell:
+        creates: "{{ nvhpc_target }}"
+        cmd: >
+          NVHPC_SILENT=true NVHPC_INSTALL_DIR={{ nvhpc_target }} NVHPC_INSTALL_TYPE=single
+          {{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4/install
 
     - name: remove the tarball and installer
       ansible.builtin.file:
