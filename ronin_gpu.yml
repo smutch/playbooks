@@ -1,4 +1,4 @@
-- name: ronin gpu
+- name: ronin gpu setup
   hosts: '*.unimelb.cloud'
   roles:
     - role: common

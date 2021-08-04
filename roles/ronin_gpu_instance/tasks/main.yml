@@ -1,39 +1,46 @@
 - name: install CUDA toolkit
   import_role:
-    name: CSCfi.cuda
-  vars:
-    - gpu: true
-    - cuda_restart_node_on_install: true
+    name: nvidia.nvidia_driver
   become: true
 
-- name: grab the NVIDIA HPC-SDK
-  get_url:
-    url: https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
-    dest: '{{ ansible_env.HOME }}/'
+- name: has the NVIDIA SDK already been installed?
+  stat:
+    path: "{{ ansible_env.HOME }}/setup-nvidia_hpc_sdk.sh"
+  register: setup_script
 
-- name: unzip the SDK
-  unarchive:
-    src: nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
-    dest: '{{ ansible_env.HOME }}/'
+- name: install the NVIDIA SDK
+  when: not setup_script.stat.exists
+  block:
+    - name: grab the NVIDIA HPC-SDK
+      get_url:
+        url: https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
+        dest: "{{ ansible_env.HOME }}/"
 
-- name: install the SDK
-  environment:
-    NVHPC_SILENT: 1
-    NVHPC_INSTALL_DIR: /opt/nvidia/hpc_sdk
-    NVHPC_INSTALL_TYPE: single
-  shell:
-    cmd: '{{ ansible.env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4/install'
-    creates: /opt/nvidia/hpc_sdk
-  become: true
+    - name: unzip the SDK
+      unarchive:
+        src: nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz
+        dest: "{{ ansible_env.HOME }}/"
+        remote_src: true
+        creates: nvhpc_2021_217_Linux_x86_64_cuda_11.4
 
-- name: remove the tarball and installer
-  file:
-    path:
-      - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz'
-      - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4'
-    state: absent
+    - name: install the SDK
+      environment:
+        NVHPC_SILENT: 1
+        NVHPC_INSTALL_DIR: /opt/nvidia/hpc_sdk
+        NVHPC_INSTALL_TYPE: single
+      shell:
+        cmd: "{{ ansible.env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4/install"
+        creates: /opt/nvidia/hpc_sdk
+      become: true
 
-- name: copy the setup script
-  copy:
-    src: files/setup-nvidia_hpc_sdk.sh
-    dest: '{{ ansible_env.HOME }}/'
+    - name: remove the tarball and installer
+      ansible.builtin.file:
+        path:
+          - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4.tar.gz'
+          - '{{ ansible_env.HOME }}/nvhpc_2021_217_Linux_x86_64_cuda_11.4'
+        state: absent
+
+    - name: copy the setup script
+      copy:
+        src: files/setup-nvidia_hpc_sdk.sh
+        dest: "{{ ansible_env.HOME }}/"
