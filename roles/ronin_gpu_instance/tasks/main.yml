@@ -3,11 +3,34 @@
     name: nvidia.nvidia_driver
   become: true
 
-- name: install the NVIDIA SDK
-  apt:
-    deb: {{ item }}
+- name: grab the NVIDIA HPC-SDK
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/"
   loop:
     - https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc-21-7_21.7_amd64.deb
     - https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc-2021_21.7_amd64.deb
     - https://developer.download.nvidia.com/hpc-sdk/21.7/nvhpc-21-7-cuda-multi_21.7_amd64.deb
+
+# N.B. need to do this with a shell command otherwise dependency resolution fails
+- name: install the NVIDIA HPC-SDK
+  shell: >
+    apt-get install -y
+    ./nvhpc-21-7_21.7_amd64.deb
+    ./nvhpc-2021_21.7_amd64.deb
+    ./nvhpc-21-7-cuda-multi_21.7_amd64.deb
   become: true
+
+- name: remove HPC SDK debs
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: absent
+  loop:
+    - nvhpc-21-7_21.7_amd64.deb
+    - nvhpc-2021_21.7_amd64.deb
+    - nvhpc-21-7-cuda-multi_21.7_amd64.deb
+
+- name: copy the setup script
+  copy:
+    src: files/setup-nvidia_hpc_sdk.sh
+    dest: "{{ ansible_env.HOME }}/"
