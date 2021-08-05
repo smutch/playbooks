@@ -1,1 +1,2 @@
 - name: nvidia.nvidia_driver
+- name: ansible.posix
