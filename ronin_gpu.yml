@@ -6,4 +6,6 @@
         python: pyenv
       tags: common
     - role: ronin_gpu_instance
+      vars:
+        cuda_type: HPC-SDK
       tags: gpu
