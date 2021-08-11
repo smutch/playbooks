@@ -1,2 +1,5 @@
-- name: nvidia.nvidia_driver
-- name: ansible.posix
+roles:
+  - name: nvidia.nvidia_driver
+
+collections:
+  - name: ansible.posix
