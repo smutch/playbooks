@@ -45,5 +45,11 @@
   args:
     executable: /bin/bash
 
+- name: install golang (for efm lsp)
+  apt:
+    name: golang
+  state: present
+  become: true
+
 - name: setup neovim
-  shell: '~/bin/nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall'
+  shell: '~/bin/nvim -u ~/.config/nvim/lua/plugins.lua +PackerSync'
