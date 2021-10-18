@@ -7,5 +7,5 @@
       tags: common
     - role: ronin_gpu_instance
       vars:
-        cuda_type: HPC-SDK
+        install_hpc_sdk: yes
       tags: gpu

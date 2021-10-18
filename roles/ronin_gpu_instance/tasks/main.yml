@@ -1,10 +1,18 @@
 - name: install CUDA driver
+  vars:
+    nvidia_driver_ubuntu_install_from_cuda_repo: yes
+    nvidia_driver_ubuntu_cuda_package: cuda
   import_role:
     name: nvidia.nvidia_driver
   become: true
+  
+- name: copy the toolkit setup script
+  copy:
+    src: files/setup-cuda_toolkit.sh
+    dest: "{{ ansible_env.HOME }}/"
 
 - name: install the NVIDIA HPC SDK
-  when: cuda_type == "HPC-SDK"
+  when: install_hpc_sdk
   block:
   - name: grab the SDK debs
     get_url:
@@ -37,23 +45,3 @@
     copy:
       src: files/setup-nvidia_hpc_sdk.sh
       dest: "{{ ansible_env.HOME }}/"
-
-- name: install the NVIDIA toolkit
-  when: cuda_type == "toolkit"
-  become: true
-  block:
-    - name: grab the pin file
-      get_url:
-        url: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
-        dest: "/etc/apt/preferences.d/cuda-repository-pin-600"
-
-    - name: update apt to use cuda repo
-      shell: |
-        apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
-        add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /"
-
-    - name: install the toolkit
-      apt:
-        name: cuda
-        state: present
-        update_cache: true
