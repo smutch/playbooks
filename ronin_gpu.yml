@@ -7,5 +7,5 @@
       tags: common
     - role: ronin_gpu_instance
       vars:
-        install_hpc_sdk: yes
+        install_hpc_sdk: no
       tags: gpu

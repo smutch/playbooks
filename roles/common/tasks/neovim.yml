@@ -6,7 +6,7 @@
 
 - name: download neovim
   get_url:
-    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
     dest: ~/bin/nvim
     mode: '750'
 
@@ -48,8 +48,5 @@
 - name: install golang (for efm lsp)
   apt:
     name: golang
-  state: present
+    state: present
   become: true
-
-- name: setup neovim
-  shell: '~/bin/nvim -u ~/.config/nvim/lua/plugins.lua +PackerSync'
