@@ -11,6 +11,6 @@ new-user host:
     #!/usr/bin/env bash
     ansible-galaxy collection install ansible.posix
     read -s -p "Password for new account: " password  && \
-        ansible-playbook create_user.yml -i ubuntu@{{ host }}, --extra-vars '{"user_password": $password}'
+        ansible-playbook create_user.yml -i ubuntu@{{ host }}, --extra-vars "{'user_password': "$password"}"
 
 # vim: set ft=just:
