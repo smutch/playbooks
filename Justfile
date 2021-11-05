@@ -1,7 +1,7 @@
 _default:
     @just --list --list-heading $'Ansible bootstrap tasks\n-----------------------\n\n'
 
-standard host: (new-user host) (dev host)
+standard host: (new-user host) (bootstrap-dev host)
 
 new-user host:
     #!/usr/bin/env bash
