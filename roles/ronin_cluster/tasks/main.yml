@@ -1,9 +1,0 @@
----
-- name: conda tools setup
-  include_tasks: conda.yml
-
-- name: aws setup
-  include_tasks: aws.yml
-
-- name: spack setup and meraxes requirements
-  include_tasks: spack.yml
