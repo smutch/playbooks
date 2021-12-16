@@ -1,8 +1,0 @@
----
-- name: setup ronin cluster
-  hosts: '*.unimelb.cloud'
-  vars:
-    miniconda_parent_dir: /apps
-  roles:
-    - common
-    - ronin_cluster
