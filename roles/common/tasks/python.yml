@@ -57,10 +57,10 @@
 - name: install mambaforge
   shell: |
     curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh
-    bash Mambaforge-$(uname)-$(uname -m).sh -b && rm Mambaforge-$(uname)-$(uname -m).sh
+    bash Mambaforge-$(uname)-$(uname -m).sh -b -p {{ mambaforge_dir }} && rm Mambaforge-$(uname)-$(uname -m).sh
   args:
     executable: /bin/zsh
-    creates: '{{ ansible_env.HOME }}/mambaforge'
+    creates: '{{ mambaforge_dir }}'
 
 - name: add mambaforge to zshrc
-  shell: '{{ ansible_env.HOME }}/mambaforge/bin/mamba init zsh'
+  shell: '{{ mambaforge_dir }}/bin/mamba init zsh'

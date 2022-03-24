@@ -9,10 +9,10 @@ new-user host:
     read -s -p "Password for new account: " password  && \
         ansible-playbook create_user.yml -i ubuntu@{{ host }}, --extra-vars "{'user_password': "$password"}"
 
-bootstrap-dev host:
-    ansible-playbook dev.yml -K -i {{ host }}, --ssh-common-args='-o ForwardAgent=yes'
+bootstrap-dev host extra-vars="":
+    ansible-playbook dev.yml -K -i {{ host }}, --ssh-common-args='-o ForwardAgent=yes' --extra-vars "{{ extra-vars }}"
 
-bootstrap-ronin-gpu host tags="":
+bootstrap-ronin-gpu host tags="" extra-vars="":
     ansible-galaxy install nvidia.nvidia_driver
     ansible-playbook ronin_gpu.yml -i {{ host }}, -K --ssh-common-args="-o ForwardAgent=yes" {{ if tags != "" { "--tags="+tags } else { "" } }}
 
