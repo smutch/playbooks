@@ -6,7 +6,7 @@
 
 - name: download neovim
   get_url:
-    url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/latest/nvim.appimage
     dest: ~/bin/nvim
     mode: '750'
 
@@ -44,9 +44,3 @@
   shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node"
   args:
     executable: /bin/bash
-
-- name: install golang (for efm lsp)
-  apt:
-    name: golang
-    state: present
-  become: true

@@ -31,10 +31,10 @@
   become: true
   when: python == "pyenv"
 
-- name: install python 3.9 (may take some time) and set to global
+- name: install python 3.10.3 (may take some time) and set to global
   shell: >
-    {{ ansible_env.HOME }}/.pyenv/bin/pyenv install -s 3.9.6 &&
-    {{ ansible_env.HOME }}/.pyenv/bin/pyenv global 3.9.6
+    {{ ansible_env.HOME }}/.pyenv/bin/pyenv install -s 3.10.3 &&
+    {{ ansible_env.HOME }}/.pyenv/bin/pyenv global 3.10.3
   when: python == "pyenv"
 
 # OR SYSTEM PYTHON
