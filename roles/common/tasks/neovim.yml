@@ -6,7 +6,7 @@
 
 - name: download neovim
   get_url:
-    url: https://github.com/neovim/neovim/releases/download/latest/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
     dest: ~/bin/nvim
     mode: '750'
 

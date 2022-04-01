@@ -1,7 +1,7 @@
 # PYENV =============
 - name: install pyenv, pyenv-virtualenv
   shell: |
-    curl https://pyenv.run | zsh
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | zsh
   args:
     creates: '{{ ansible_env.HOME }}/.pyenv'
   when: python == "pyenv"
