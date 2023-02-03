@@ -1,22 +1,5 @@
 ---
-- name: create bin directory
-  file:
-    path: ~/bin
-    state: directory
-
-- name: download neovim
-  get_url:
-    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-    dest: ~/bin/nvim
-    mode: '750'
-
 # PYENV =============
-
-- name: get the pyenv global pip location
-  shell: '{{ ansible_env.HOME }}/.pyenv/bin/pyenv which pip'
-  register: pip_command
-  ignore_errors: true
-  when: python == "pyenv"
 
 - name: install pynvim in the pyenv global python
   pip:
@@ -34,13 +17,13 @@
 
 # ===================
 
-- name: install nvm
-  shell: >
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-  args:
-    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+# - name: install nvm
+#   shell: >
+#     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
-- name: install nodejs via nvm
-  shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node"
-  args:
-    executable: /bin/bash
+# - name: install nodejs via nvm
+#   shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install node"
+#   args:
+#     executable: /bin/bash

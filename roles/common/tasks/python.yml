@@ -31,10 +31,10 @@
   become: true
   when: python == "pyenv"
 
-- name: install python 3.10.3 (may take some time) and set to global
+- name: install python 3.11 (may take some time) and set to global
   shell: >
-    {{ ansible_env.HOME }}/.pyenv/bin/pyenv install -s 3.10.3 &&
-    {{ ansible_env.HOME }}/.pyenv/bin/pyenv global 3.10.3
+    {{ ansible_env.HOME }}/.pyenv/bin/pyenv install -s 3.11 &&
+    {{ ansible_env.HOME }}/.pyenv/bin/pyenv global 3.11
   when: python == "pyenv"
 
 # OR SYSTEM PYTHON
@@ -47,10 +47,27 @@
 
 # ===================
 
-- name: install poetry
+- name: get the pyenv global pip location
+  shell: '{{ ansible_env.HOME }}/.pyenv/bin/pyenv which pip'
+  register: pip_command
+  ignore_errors: true
+  when: python == "pyenv"
+
+- name: install pipx
+  pip:
+    executable: '{{ pip_command.stdout }}'
+    name: pipx
+
+- name: pipx ensurepath
   shell: >
-    source {{ ansible_env.HOME }}/.zprofile &&
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+    {{ ansible_env.HOME }}/.pyenv/bin/pyenv exec pipx ensurepath
+  args:
+    executable: /bin/zsh
+
+- name: install poetry and hatch
+  shell: >
+    # source {{ ansible_env.HOME }}/.zprofile
+    pipx install poetry hatch
   args:
     executable: /bin/zsh
 
@@ -64,3 +81,5 @@
 
 - name: add mambaforge to zshrc
   shell: '{{ mambaforge_dir }}/bin/mamba init zsh'
+  args:
+    executable: /bin/zsh

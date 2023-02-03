@@ -25,5 +25,5 @@
 - name: setup python
   import_tasks: python.yml
 
-- name: install neovim
+- name: install neovim deps
   import_tasks: neovim.yml
