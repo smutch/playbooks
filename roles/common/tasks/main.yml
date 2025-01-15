@@ -3,6 +3,18 @@
     cmd: locale-gen en_AU.UTF-8
   become: true
 
+- name: copy ghostty terminfo
+  shell:
+    cmd: tic -x -
+    stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
+
+- name: install zsh
+  apt:
+    name: zsh
+    state: present
+    update_cache: true
+  become: true
+
 - name: download dotfiles
   ansible.builtin.git:
     repo: 'git@github.com:smutch/dotfiles.git'
@@ -15,15 +27,8 @@
     cmd: ./install linux
     executable: /bin/zsh
 
-- name: install tmux
-  apt:
-    name: tmux
-    state: present
-    update_cache: true
-  become: true
-
-- name: setup python
-  import_tasks: python.yml
-
-- name: install neovim deps
-  import_tasks: neovim.yml
+- name: install UV
+  shell: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -q
+  args:
+    creates: '{{ ansible_env.HOME }}/.local/bin/uv'

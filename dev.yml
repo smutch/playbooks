@@ -5,5 +5,3 @@
   hosts: '*'
   roles:
     - common
-  vars:
-    python: pyenv  # change to system to use apt installed python3 instead
