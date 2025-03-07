@@ -1,3 +1,14 @@
+- name: get the username (non-root)
+  set_fact:
+    the_user: "{{ ansible_user_id }}"
+    local_home: "{{ lookup('env', 'HOME') }}"
+
+- name: Copy id_rsa.pub
+  authorized_key:
+    user="{{ the_user }}"
+    key="{{ lookup('file', '{{ local_home }}/.ssh/id_rsa.pub') }}"
+    manage_dir=yes
+
 - name: generate locale
   shell:
     cmd: locale-gen en_AU.UTF-8
@@ -15,15 +26,29 @@
     update_cache: true
   become: true
 
+- name: change user shell to zsh
+  block:
+    - name: change shell
+      become: true
+      ansible.builtin.user:
+        name: "{{ the_user }}"
+        shell: /bin/zsh
+  rescue:
+    - name: run zsh on login
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.profile"
+        block: "{{ lookup('ansible.builtin.file', 'zsh-shell.sh') }}"
+        state: present
+
 - name: download dotfiles
   ansible.builtin.git:
-    repo: 'git@github.com:smutch/dotfiles.git'
-    dest: '{{ ansible_env.HOME }}/dotfiles'
+    repo: "git@github.com:smutch/dotfiles.git"
+    dest: "{{ ansible_env.HOME }}/dotfiles"
     accept_hostkey: true
 
 - name: install dotfiles
   shell:
-    chdir: '{{ ansible_env.HOME }}/dotfiles'
+    chdir: "{{ ansible_env.HOME }}/dotfiles"
     cmd: ./install linux
     executable: /bin/zsh
 
@@ -31,4 +56,4 @@
   shell: |
     curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -q
   args:
-    creates: '{{ ansible_env.HOME }}/.local/bin/uv'
+    creates: "{{ ansible_env.HOME }}/.local/bin/uv"

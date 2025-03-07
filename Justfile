@@ -10,7 +10,7 @@ new-user host:
         ansible-playbook create_user.yml -i ubuntu@{{ host }}, --extra-vars "{'user_password': "$password"}"
 
 bootstrap-dev host extra-vars="":
-    ansible-playbook dev.yml -K -i {{ host }}, --ssh-common-args='-o ForwardAgent=yes' --extra-vars "{{ extra-vars }}"
+    ansible-playbook dev.yml -k -K -i {{ host }}, --ssh-common-args='-o ForwardAgent=yes' --extra-vars "{{ extra-vars }}"
 
 bootstrap-ronin-gpu host tags="" extra-vars="":
     ansible-galaxy install nvidia.nvidia_driver

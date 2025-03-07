@@ -1,5 +1,5 @@
 # run with
-# ansible-playbook dev.yml -K -i <host>, --ssh-common-args='-o ForwardAgent=yes'
+# ansible-playbook dev.yml -k -K -i <host>, --ssh-common-args='-o ForwardAgent=yes'
 ---
 - name: setup dev environment
   hosts: '*'
