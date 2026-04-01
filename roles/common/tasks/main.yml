@@ -14,11 +14,6 @@
     cmd: locale-gen en_AU.UTF-8
   become: true
 
-- name: copy ghostty terminfo
-  shell:
-    cmd: tic -x -
-    stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
-
 - name: install zsh
   apt:
     name: zsh
@@ -51,6 +46,16 @@
     chdir: "{{ ansible_env.HOME }}/dotfiles"
     cmd: ./install linux
     executable: /bin/zsh
+
+- name: copy ghostty terminfo (global)
+  shell:
+    cmd: tic -x -
+    stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
+
+- name: copy ghostty terminfo (pixi installed tmux)
+  shell:
+    cmd: "{{ ansible_env.HOME }}/.pixi/bin/tic -x -"
+    stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
 
 - name: install UV
   shell: |
