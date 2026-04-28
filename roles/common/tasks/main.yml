@@ -1,12 +1,12 @@
 - name: get the username (non-root)
   set_fact:
-    the_user: "{{ ansible_user_id }}"
+    the_user: "{{ ansible_facts['user_id'] }}"
     local_home: "{{ lookup('env', 'HOME') }}"
 
 - name: Copy id_rsa.pub
   authorized_key:
     user="{{ the_user }}"
-    key="{{ lookup('file', '{{ local_home }}/.ssh/id_rsa.pub') }}"
+    key="{{ lookup('file', local_home + '/.ssh/id_rsa.pub') }}"
     manage_dir=yes
 
 - name: generate locale
@@ -31,19 +31,19 @@
   rescue:
     - name: run zsh on login
       ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.profile"
+        path: "{{ ansible_facts['env'].HOME }}/.profile"
         block: "{{ lookup('ansible.builtin.file', 'zsh-shell.sh') }}"
         state: present
 
 - name: download dotfiles
   ansible.builtin.git:
     repo: "git@github.com:smutch/dotfiles.git"
-    dest: "{{ ansible_env.HOME }}/dotfiles"
+    dest: "{{ ansible_facts['env'].HOME }}/dotfiles"
     accept_hostkey: true
 
 - name: install dotfiles
   shell:
-    chdir: "{{ ansible_env.HOME }}/dotfiles"
+    chdir: "{{ ansible_facts['env'].HOME }}/dotfiles"
     cmd: ./install linux
     executable: /bin/zsh
 
@@ -54,11 +54,11 @@
 
 - name: copy ghostty terminfo (pixi installed tmux)
   shell:
-    cmd: "{{ ansible_env.HOME }}/.pixi/envs/tmux/bin/tic -x -"
+    cmd: "{{ ansible_facts['env'].HOME }}/.pixi/envs/tmux/bin/tic -x -"
     stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
 
 - name: install UV
   shell: |
     curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -q
   args:
-    creates: "{{ ansible_env.HOME }}/.local/bin/uv"
+    creates: "{{ ansible_facts['env'].HOME }}/.local/bin/uv"
