@@ -1,8 +1,0 @@
----
-- name: setup
-  hosts: 'cebra'
-  # vars:
-    # conda_env: test
-
-  tasks:
-    - import_tasks: roles/common/tasks/neovim.yml

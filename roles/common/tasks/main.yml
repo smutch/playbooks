@@ -54,7 +54,7 @@
 
 - name: copy ghostty terminfo (pixi installed tmux)
   shell:
-    cmd: "{{ ansible_env.HOME }}/.pixi/bin/tic -x -"
+    cmd: "{{ ansible_env.HOME }}/.pixi/envs/tmux/bin/tic -x -"
     stdin: "{{ lookup('pipe', 'infocmp -x ghostty') }}"
 
 - name: install UV

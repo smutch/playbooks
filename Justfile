@@ -12,8 +12,4 @@ new-user host:
 bootstrap-dev host extra-vars="":
     ansible-playbook dev.yml -k -K -i {{ host }}, --ssh-common-args='-o ForwardAgent=yes' --extra-vars "{{ extra-vars }}"
 
-bootstrap-ronin-gpu host tags="" extra-vars="":
-    ansible-galaxy install nvidia.nvidia_driver
-    ansible-playbook ronin_gpu.yml -i {{ host }}, -K --ssh-common-args="-o ForwardAgent=yes" {{ if tags != "" { "--tags="+tags } else { "" } }}
-
 # vim: set ft=just:
